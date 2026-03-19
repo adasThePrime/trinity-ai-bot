@@ -1,0 +1,7 @@
+aiogram>=3.26.0
+ddgs[api]>=9.11.2
+httpx[http2,brotli,socks,zstd]>=0.28.1
+pymongo>=4.16.0
+python-dotenv>=1.2.2
+tzdata>=2025.3
+uvloop>=0.22.1; sys_platform != "win32"
