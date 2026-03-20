@@ -10,9 +10,9 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from bot.services.access import is_admin
 from bot.services.cache import cache, reload_cache
 from bot.services.db import db
-from bot.utils.auth import ensure_user_access, get_user_id
+from bot.utils.auth import ensure_user_access
 from bot.utils.context import reset_context
-from bot.utils.messages import build_models_message, build_settings_message
+from bot.utils.messages import build_settings_message
 
 logger = logging.getLogger(__name__)
 router = Router(name="commands")

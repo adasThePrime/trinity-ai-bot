@@ -9,7 +9,7 @@ from bot.services.search import (
     image_search,
     news_search,
     video_search,
-    web_search,
+    web_search
 )
 from bot.services.time import get_current_time
 

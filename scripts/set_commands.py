@@ -7,7 +7,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from aiogram import Bot
-from aiogram.types import BotCommand, BotCommandScopeAllPrivateChats, BotCommandScopeChat, BotCommandScopeDefault
+from aiogram.types import BotCommand, BotCommandScopeAllPrivateChats, BotCommandScopeChat
 
 from bot.config import BOT_TOKEN, ADMIN_IDS
 

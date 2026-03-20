@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 import secrets
-from typing import Union
 
 from aiogram import Router
 from aiogram.types import (
@@ -14,7 +13,6 @@ from aiogram.types import (
     InputTextMessageContent
 )
 
-from bot.services.access import is_user_approved
 from bot.services.ai import chat_completion, resolve_user_model
 from bot.services.rate_limit import enforce_rate_limit
 from bot.utils.auth import ensure_user_access
@@ -64,7 +62,7 @@ async def handle_inline_query(inline_query: InlineQuery):
 @router.chosen_inline_result()
 @ensure_user_access()
 @enforce_rate_limit()
-async def handle_chosen_inline_result(chosen_result: Union[ChosenInlineResult]):
+async def handle_chosen_inline_result(chosen_result: ChosenInlineResult):
     user_id = chosen_result.from_user.id
     inline_message_id = chosen_result.inline_message_id
     if not inline_message_id:
