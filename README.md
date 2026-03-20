@@ -1,11 +1,13 @@
 # Trinity AI - Telegram Bot
 
 ![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-An AI-powered Telegram bot built with [aiogram](https://docs.aiogram.dev/) and [uvloop](https://github.com/MagicStack/uvloop) that supports real-time web search, currency conversion, timezone lookups, streaming responses, MongoDB user/rate-limit caching, and an optional maintenance mode.
+An AI-powered Telegram bot built with [aiogram](https://docs.aiogram.dev/) and [uvloop](https://github.com/MagicStack/uvloop) that supports real-time web search, currency conversion, timezone lookups, streaming responses, inline queries, MongoDB user/rate-limit caching, and an optional maintenance mode.
 
-> **Note:** Python 3.10+ is required. If you are using `uvloop`, Python 3.12+ is required.
+>[!NOTE]
+> - `uvloop` requires Python 3.12 or later.
+> - If `uvloop` is unavailable, bot falls back to `asyncio`.
 
 ## Setup
 
