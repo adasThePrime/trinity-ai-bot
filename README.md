@@ -6,8 +6,17 @@
 An AI-powered Telegram bot built with [aiogram](https://docs.aiogram.dev/) and [uvloop](https://github.com/MagicStack/uvloop) that supports real-time web search, currency conversion, timezone lookups, streaming responses, inline queries, MongoDB user/rate-limit caching, and an optional maintenance mode.
 
 >[!NOTE]
-> - `uvloop` requires Python 3.12 or later.
-> - If `uvloop` is unavailable, bot falls back to `asyncio`.
+> `uvloop` requires Python 3.12 or later. If it's not available, the bot falls back to `asyncio`.
+
+## Table of Contents
+
+- [Setup](#setup)
+- [Configuration](#configuration)
+- [Access Control](#access-control)
+- [Project Structure](#project-structure)
+- [Commands](#commands)
+- [Scripts](#scripts)
+- [License](#license)
 
 ## Setup
 
@@ -19,7 +28,7 @@ cd trinity-ai-bot
 pip install -r requirements.txt
 ```
 
-### 2. Start the ddgs search server
+### 2. Start the ddgs server
 
 The bot uses the [ddgs API server](https://github.com/deedy5/ddgs#api-server-with-mcp-integration) for web searches. Start it before running the bot:
 
