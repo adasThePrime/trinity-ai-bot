@@ -3,17 +3,18 @@ from __future__ import annotations
 import json
 import logging
 
-from bot.services.currency import CurrencyError, currency_exchange
-from bot.services.search import (
+from .currency import CurrencyError, currency_exchange
+from .search import (
     SearchError,
     image_search,
     news_search,
     video_search,
     web_search
 )
-from bot.services.time import get_current_time
+from .time import get_current_time
 
 logger = logging.getLogger(__name__)
+
 
 TOOLS = [
     {

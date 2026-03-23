@@ -6,7 +6,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from bot.services.access import is_admin
 from bot.services.ai import get_default_model, get_models, model_id_to_alias
-from bot.services.time import format_remaining_time, format_utc_dt
+from bot.services.time_fmt import format_remaining_time
 
 
 def build_settings_message() -> tuple[str, InlineKeyboardMarkup]:

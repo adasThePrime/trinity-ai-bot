@@ -47,26 +47,6 @@ def _resolve_tz(name: str) -> str:
     return _TZ_ALIASES.get(upper, name.strip())
 
 
-def format_utc_dt(dt: datetime) -> str:
-    if dt is None:
-        return "—"
-    return dt.strftime("%H:%M UTC, %b %d")
-
-
-def format_remaining_time(seconds: float) -> str:
-    total = int(seconds) + 1
-    h, remainder = divmod(total, 3600)
-    m, s = divmod(remainder, 60)
-    parts = []
-    if h:
-        parts.append(f"{h}h")
-    if m:
-        parts.append(f"{m}m")
-    if s:
-        parts.append(f"{s}s")
-    return " ".join(parts) if parts else "1s"
-
-
 def get_current_time(timezones: list[str] | None = None) -> dict:
     if not timezones:
         timezones = ["UTC"]
