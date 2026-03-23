@@ -10,8 +10,8 @@ from bot.config import RATE_LIMITS_APPROVED_USER, RATE_LIMITS_DB_THRESHOLD, RATE
 from bot.services.access import is_admin, is_user_approved
 from bot.services.cache import cache
 from bot.services.db import db
-from bot.services.time_fmt import format_remaining_time
 from bot.utils.auth import get_user_id
+from bot.utils.time_fmt import format_remaining_time
 
 logger = logging.getLogger(__name__)
 
