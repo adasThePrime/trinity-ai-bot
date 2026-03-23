@@ -5,6 +5,19 @@ from datetime import datetime, timezone
 from bot.config import SEARCH_ENGINES, USE_ZAI
 from bot.services.tools import TOOLS
 
+
+def _intro(bot_username: str) -> str:
+    today = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
+
+    return (
+        "You are Trinity AI, a capable and friendly Telegram assistant "
+        "created by @adasThePrime (https://t.me/adasThePrime).\n\n"
+        
+        f"Current date: {today} UTC\n"
+        f"Your username: @{bot_username}\n\n"
+    )
+
+
 def _tools_section() -> str:
     tool_count = len(TOOLS)
     text_be = ", ".join(sorted(SEARCH_ENGINES["text"]))
@@ -17,15 +30,19 @@ def _tools_section() -> str:
         "- web_search: Search the web for information\n"
         f"  query [required]: The search query\n"
         f"  backend: Search backend ({text_be}). Default: auto\n"
+        "  page: Page number for pagination. Default: 1\n"
         "- image_search: Search for images\n"
         f"  query [required]: The search query\n"
         f"  backend: Search backend ({img_be}). Default: auto\n"
+        "  page: Page number for pagination. Default: 1\n"
         "- news_search: Search for recent news and headlines\n"
         f"  query [required]: The search query\n"
         f"  backend: Search backend ({news_be}). Default: auto\n"
+        "  page: Page number for pagination. Default: 1\n"
         "- video_search: Search for videos\n"
         f"  query [required]: The search query\n"
         f"  backend: Search backend ({vid_be}). Default: auto\n"
+        "  page: Page number for pagination. Default: 1\n"
         "- get_current_time: Get the current date and time\n"
         "  timezones: Comma-separated timezone names or abbreviations "
         "(UTC, EST, PST, IST, etc.). Default: UTC\n"
@@ -37,8 +54,6 @@ def _tools_section() -> str:
         "  date: Date for historical rates (YYYY-MM-DD)\n"
         "  start_date: Start date for timeseries (YYYY-MM-DD)\n"
         "  end_date: End date for timeseries (YYYY-MM-DD)\n\n"
-        "Default to web_search; use others only when clearly about "
-        "images, news, or videos.\n\n"
         
         "### Stale Data\n"
         "Data in chat history — such as search results, times, "
@@ -99,20 +114,9 @@ def _rules() -> str:
 
 
 def _build_zai_prompt(bot_username: str) -> str:
-    today = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
-
     return (
-        "You are Trinity AI, a capable and friendly Telegram assistant "
-        "created by @adasThePrime (https://t.me/adasThePrime).\n"
-        
-        f"Current date: {today} UTC\n"
-        f"Your username: @{bot_username}\n\n"
-
+        _intro(bot_username)
         + _personality()
-
-        # + "Silent execution: do not send progress commentary during tool "
-        # "execution. Wait until the task is done, then send one clean result.\n\n"
-
         + _formatting_rules()
         + _tools_section()
 
@@ -128,16 +132,8 @@ def _build_zai_prompt(bot_username: str) -> str:
     )
 
 def _build_openrouter_prompt(bot_username: str) -> str:
-    today = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
-
     return (
-        "You are *Trinity AI*, a capable and friendly Telegram assistant "
-        "created by *@adasThePrime* (https://t.me/adasThePrime). When users ask who made you or who your "
-        "creator is, always credit @adasThePrime.\n\n"
-
-        f"Current date: {today} UTC\n"
-        f"Your username: @{bot_username}\n\n"
-
+        _intro(bot_username)
         + _personality()
         + _formatting_rules()
         + _tools_section()

@@ -38,9 +38,12 @@ async def _search(
     query: str,
     backend: str = "auto",
     max_results: int = MAX_SEARCH_RESULTS,
+    page: int = 1,
     **kwargs
 ) -> list[dict]:
     payload = {"query": query, "backend": backend, "max_results": max_results, **kwargs}
+    if page > 0:
+        payload["page"] = page
 
     last_error = None
     for attempt in range(1, DDGS_MAX_RETRIES + 1):
@@ -51,7 +54,7 @@ async def _search(
             if isinstance(results, dict):
                 results = results.get("results", [])
             logger.info(
-                f"Search [{category}] query={query!r} backend={backend} -> {len(results)} results (attempt {attempt})"
+                f"Search [{category}] query={query!r} backend={backend} page={page} -> {len(results)} results (attempt {attempt})"
             )
             return results
         
@@ -66,14 +69,14 @@ async def _search(
         except httpx.HTTPStatusError as exc:
             last_error = exc
             logger.error(
-                f"HTTP {exc.response.status_code} [{category}] query={query!r}: {exc}"
+                f"HTTP {exc.response.status_code} [{category}] query={query!r} backend={backend} page={page}: {exc}"
             )
             break
 
         except Exception as exc:
             last_error = exc
             logger.error(
-                f"Unexpected error [{category}] query={query!r}: {exc}",
+                f"Unexpected error [{category}] query={query!r} backend={backend} page={page}: {exc}",
                 exc_info=True
             )
             break
@@ -95,34 +98,38 @@ def _validate_backend(category: str, backend: str) -> str:
 async def web_search(
     query: str,
     backend: str = "auto",
-    max_results: int = MAX_SEARCH_RESULTS
+    max_results: int = MAX_SEARCH_RESULTS,
+    page: int = 1
 ) -> list[dict]:
     backend = _validate_backend("text", backend)
-    return await _search("text", query, backend, max_results)
+    return await _search("text", query, backend, max_results, page)
 
 
 async def image_search(
     query: str,
     backend: str = "auto",
-    max_results: int = MAX_SEARCH_RESULTS
+    max_results: int = MAX_SEARCH_RESULTS,
+    page: int = 1
 ) -> list[dict]:
     backend = _validate_backend("images", backend)
-    return await _search("images", query, backend, max_results)
+    return await _search("images", query, backend, max_results, page)
 
 
 async def news_search(
     query: str,
     backend: str = "auto",
-    max_results: int = MAX_SEARCH_RESULTS
+    max_results: int = MAX_SEARCH_RESULTS,
+    page: int = 1
 ) -> list[dict]:
     backend = _validate_backend("news", backend)
-    return await _search("news", query, backend, max_results)
+    return await _search("news", query, backend, max_results, page)
 
 
 async def video_search(
     query: str,
     backend: str = "auto",
-    max_results: int = MAX_SEARCH_RESULTS
+    max_results: int = MAX_SEARCH_RESULTS,
+    page: int = 1
 ) -> list[dict]:
     backend = _validate_backend("videos", backend)
-    return await _search("videos", query, backend, max_results)
+    return await _search("videos", query, backend, max_results, page)

@@ -12,8 +12,13 @@ from .search import (
     web_search
 )
 from .time import get_current_time
+from bot.config import SEARCH_ENGINES
 
 logger = logging.getLogger(__name__)
+
+
+def _get_search_backends(category: str) -> str:
+    return "|".join(sorted(SEARCH_ENGINES.get(category, set())))
 
 
 TOOLS = [
@@ -28,11 +33,16 @@ TOOLS = [
                     "query": {"type": "string", "description": "Search query."},
                     "backend": {
                         "type": "string",
-                        "description": "brave|duckduckgo|google|grokipedia|mojeek|wikipedia|yahoo|yandex|auto",
+                        "description": f"{_get_search_backends('text')}|auto",
                         "default": "auto",
                     },
+                    "page": {
+                        "type": "integer",
+                        "description": "Page number for pagination (default 1).",
+                        "default": 1
+                    }
                 },
-                "required": ["query"],
+                "required": ["query"]
             }
         }
     },
@@ -47,8 +57,13 @@ TOOLS = [
                     "query": {"type": "string", "description": "Image search query."},
                     "backend": {
                         "type": "string",
-                        "description": "duckduckgo|auto",
+                        "description": f"{_get_search_backends('images')}|auto",
                         "default": "auto"
+                    },
+                    "page": {
+                        "type": "integer",
+                        "description": "Page number for pagination (default 1).",
+                        "default": 1
                     }
                 },
                 "required": ["query"]
@@ -66,8 +81,13 @@ TOOLS = [
                     "query": {"type": "string", "description": "News search query."},
                     "backend": {
                         "type": "string",
-                        "description": "bing|duckduckgo|yahoo|auto",
+                        "description": f"{_get_search_backends('news')}|auto",
                         "default": "auto"
+                    },
+                    "page": {
+                        "type": "integer",
+                        "description": "Page number for pagination (default 1).",
+                        "default": 1
                     }
                 },
                 "required": ["query"]
@@ -85,8 +105,13 @@ TOOLS = [
                     "query": {"type": "string", "description": "Video search query."},
                     "backend": {
                         "type": "string",
-                        "description": "duckduckgo|auto",
+                        "description": f"{_get_search_backends('videos')}|auto",
                         "default": "auto"
+                    },
+                    "page": {
+                        "type": "integer",
+                        "description": "Page number for pagination (default 1).",
+                        "default": 1
                     }
                 },
                 "required": ["query"]
@@ -146,11 +171,6 @@ TOOLS = [
     }
 ]
 
-_NO_RESULTS = (
-    "No results found across all backends. "
-    "Tell the user and suggest rephrasing the query."
-)
-
 
 def _fmt_text(results: list[dict]) -> str:
     return "\n\n".join(
@@ -192,10 +212,17 @@ async def execute_tool(name: str, args: dict) -> str:
     if name in _SEARCH_DISPATCH:
         search_fn, fmt_fn = _SEARCH_DISPATCH[name]
         try:
-            results = await search_fn(args.get("query", ""), args.get("backend", "auto"))
+            results = await search_fn(
+                args.get("query", ""),
+                args.get("backend", "auto"),
+                page=int(args.get("page", 1))
+            )
         except SearchError as exc:
             return f"Search error: {exc}"
-        return fmt_fn(results) if results else _NO_RESULTS
+        return fmt_fn(results) if results else (
+            "No results found across all backends. "
+            "Tell the user and suggest rephrasing the query."
+        )
     
     if name == "get_current_time":
         results = get_current_time(args.get("timezones", ["UTC"]))
